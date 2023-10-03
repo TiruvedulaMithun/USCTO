@@ -101,14 +101,15 @@ class ExcelViewerApp:
             num_given = False
             num_tickets = self.textbox.get().strip()
             dflen = len(self.df)
-            if(num_tickets == "Enter number of tickets here" or num_tickets == ""):
+            if(num_tickets == "Enter the number of tickets (or leave empty to use all)" or num_tickets == ""):
                 num_tickets = dflen
                 # winners is a column of question marks string
                 winners = pd.Series(["?" for i in range(dflen)])
                 # assign seat numbers to all rows. higher the chances, higher the chance of getting a lower seat number
-                seat = np.random.choice(range(1, len(self.df) + 1), size=len(self.df), replace=False)
+                seatAllocs = weighted_random_selection(self.df['CustomerNumber'], self.df['Chances'] * 100, dflen)
+                for i in range(dflen):
+                    self.df.loc[self.df['CustomerNumber'] == seatAllocs[i], 'Seat'] = i + 1
                 
-                self.df['Seat'] = seat
                 self.df['Winner'] = winners
                 self.df = self.df.sort_values(by=['Seat'])
                 self.table.updateModel(TableModel(self.df))

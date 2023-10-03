@@ -47,13 +47,12 @@ def generate_tickets(df, num_tickets):
 
         if not num_given:
             normalizedChances = df["Chances"] / df["Chances"].sum()
-            num_tickets = dflen
             # winners is a column of question marks string
             winners = pd.Series(["?" for i in range(dflen)])
             # assign seat numbers to all rows. higher the chances, higher the chance of getting a lower seat number
-            seat = np.random.choice(range(1, len(df) + 1), size=len(df), replace=False)
-
-            df['Seat'] = seat
+            seatAllocs = weighted_random_selection(df['CustomerNumber'], df['Chances'] * 100, dflen)
+            for i in range(dflen):
+                df.loc[df['CustomerNumber'] == seatAllocs[i], 'Seat'] = i + 1
             df['Winner'] = winners
             df = df.sort_values(by=['Seat'])
             logging.info(f"Generated Seats no num given: {dflen}")
