@@ -21,3 +21,4 @@ pip install -r requirements.txt
 
 # Clean up
 Remove-Item python-$version.exe
+Read-Host -Prompt "Press Enter to exit. Check for success by running 'python --version' in a new terminal."

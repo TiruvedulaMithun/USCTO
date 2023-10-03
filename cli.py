@@ -98,5 +98,6 @@ if __name__ == "__main__":
         
         # output_file = input("Enter the output file name: ")
         save_to_file(df, file_path, file_type)
+        print("Done!")
     except Exception as e:
         print(f"Error: {str(e)}")
